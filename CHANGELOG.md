@@ -15,6 +15,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.7.0] - 2026-05-03
+
+### ✅ Added
+- **Vitest adversarial test suite** — 66 tests across 8 domains, all importing live production code (no stale copies, no mocks)
+- `vitest.config.ts` — jsdom environment + `@vitejs/plugin-react` so `.tsx` constants can be imported directly
+- `tests/production.test.ts` — adversarial tests covering: `getEmbedUrl`, `getDifficultyColor/Label`, `PIP_LAYOUTS`, `CARD_VALUES`, `CATEGORY_COLOR/LABEL`, `NODES`, `CONNECTIONS`, `DEMO_LESSONS`
+- Exported `NODES`, `CONNECTIONS`, `CATEGORY_COLOR`, `CATEGORY_LABEL` from `JourneyMap.tsx` for live test imports
+- Exported `PIP_LAYOUTS`, `CARD_VALUES` from `PlayingCard.tsx` for live test imports
+- `npm test`, `npm run test:watch`, `npm run test:coverage` scripts
+
+### 🐛 Bug Fixes
+- **`getYouTubeEmbedUrl` matched `evil-youtube.com`** — regex had no domain anchor; now requires `youtube.com` or `youtu.be` host exactly
+- **`getYouTubeEmbedUrl` accepted 12+ char IDs** — regex had no end boundary; IDs longer than 11 chars now correctly return null
+- **`getYouTubeEmbedUrl` failed on playlist URLs** (`?list=PL123&v=ID`) — regex only matched `v=` as first query param; now handles it at any position
+- **Journey map pulse animation aggressive beat** — removed hard snap at cycle end; added `ease: 'easeOut'` and `repeatDelay: 0.8`
+- **Journey map connection lines incorrect** — 25 wrong/illogical connections replaced with 33 correct learning-progression connections
+- **Journey map tooltip overflow** — tooltips at left/right edges now clamp with `translateX` offset so they stay within viewport
+- **Journey map transform conflict** — Framer Motion `transform` clashing with inline `translate(-50%,-50%)`; fixed with `marginLeft`/`marginTop` on wrapper div
+- **`AnimatedCardStep` memory leak** — nested `repeat: -1` GSAP tween inside `repeat: -1` timeline killed; default animation now uses standalone tween with proper cleanup
+- **`CATEGORY_LABEL` mismatch** — `LessonDetailClient.tsx` had `'Sleight of Hand'` and `'Card Controls'`; corrected to `'Sleights'` and `'Controls'` to match `JourneyMap.tsx`
+
+---
+
 ## [0.6.0] - 2026-05-03
 
 ### Added — Sanity Lesson Content
