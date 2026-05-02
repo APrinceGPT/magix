@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { client } from '@/sanity/client'
+import { client, isSanityConfigured } from '@/sanity/client'
 import { TRICK_BY_SLUG_QUERY } from '@/sanity/queries'
 import { TrickDetail } from '@/sanity/types'
 import { TrickDetailClient } from './TrickDetailClient'
@@ -40,7 +40,7 @@ const DEMO_DETAIL: Record<string, TrickDetail> = {
 }
 
 async function fetchTrick(slug: string): Promise<TrickDetail | null> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+  if (!isSanityConfigured) {
     return DEMO_DETAIL[slug] ?? Object.values(DEMO_DETAIL)[0]
   }
   try {

@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { client } from '@/sanity/client'
+import { client, isSanityConfigured } from '@/sanity/client'
 import { ALL_TRICKS_QUERY } from '@/sanity/queries'
 import { TrickSummary } from '@/sanity/types'
 import { TricksClientPage } from './TricksClientPage'
@@ -25,7 +25,7 @@ const DEMO_TRICKS: TrickSummary[] = [
 ]
 
 async function fetchTricks(): Promise<TrickSummary[]> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return DEMO_TRICKS
+  if (!isSanityConfigured) return DEMO_TRICKS
   try {
     return await client.fetch<TrickSummary[]>(ALL_TRICKS_QUERY)
   } catch {
