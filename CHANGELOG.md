@@ -10,10 +10,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Sanity Studio setup and live CMS content
+- `/learn` deep-learning path (Shuffles, Sleights, Controls, Tricks) with 4 radically different layout paradigms
+- Interactive Journey Map homepage (visual road from Complete Beginner → Professional)
+- Illustrated hand animations for sleight-of-hand technique breakdown
+- 40+ lessons spanning Complete Beginner → Amateur → Intermediate → Advanced → Professional
 - Mobile navigation menu
 - Trick search
-- Vercel production deployment via GitHub integration
+
+---
+
+## [0.4.0] - 2026-05-03
+
+### Fixed
+- **Playing cards now look like real playing cards** — previous display was two floating suit symbols with no card body
+- `PlayingCard` component rebuilt from scratch:
+  - White card face with proper border radius and drop shadow
+  - Inner decorative border (authentic card look)
+  - Top-left and bottom-right corner labels (value + suit)
+  - Pip grid layout for number cards (A through 10) with correct positions
+  - Face card treatment for J, Q, K with suit symbol
+  - Face-down variant with diagonal hatch pattern and gold diamond center
+  - Glowing state for reveal animations (gold box-shadow pulse)
+- `AnimatedCardStep` rebuilt to correctly position multiple cards per animation:
+  - **Fan**: 3 cards spread from `bottom center` transform origin
+  - **Cut**: stacked pair splits cleanly apart on Y axis
+  - **Shuffle**: two cards riffle past each other with rotation
+  - **Reveal**: single card rises with gold glow spotlight
+  - **Flip**: single card rotates on Y axis (3D flip)
+- `FloatingCard` simplified — now a thin wrapper around `PlayingCard`
+- `HeroCardDeck` updated to use real `PlayingCard` for all fanned hero cards
+
+---
+
+## [0.3.0] - 2026-05-03
+
+### Added
+- **Sanity Studio** embedded at `/studio` route via `next-sanity/studio`
+  - `sanity.config.ts` — Studio config with `structureTool` (Card Tricks section) and `visionTool` for GROQ testing
+  - `src/app/studio/[[...tool]]/page.tsx` — catch-all Studio page
+  - `src/app/studio/layout.tsx` — bare layout bypassing Navbar/Footer
+  - `AppShell` component — conditionally renders Navbar/Footer based on pathname (skips `/studio`)
+- **CORS origins** registered on Sanity project: `localhost:3000`, `magix.vercel.app`, `*.vercel.app`
+- **12 card tricks seeded** into Sanity production dataset via Mutations API:
+  - **Beginner**: The Ambitious Card, Four Ace Production, Chicago Opener, Think of a Card, Aces from Anywhere
+  - **Intermediate**: The Biddle Trick, Triumph, Oil and Water, Card Through Table
+  - **Advanced**: The Invisible Palm, Collectors, The Diagonal Palm Shift
+  - Each trick includes: full steps with animation types, real secret method, performance tips, required items, estimated time
+
+### Fixed
+- `globals.css` — moved Google Fonts `@import url()` before `@import "tailwindcss"` (CSS parse error at line 859)
+- `sanity/client.ts` — `createClient()` now uses `'placeholder'` fallback when `NEXT_PUBLIC_SANITY_PROJECT_ID` is absent, preventing build-time crash; exports `isSanityConfigured` flag
+- Pages updated to use `isSanityConfigured` instead of reading `process.env` directly
 
 ---
 
@@ -35,26 +82,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Homepage** (`app/page.tsx`):
   - Full-viewport hero with `ParticleField` (canvas-based gold/purple floating particles)
   - GSAP character-by-character headline animation with 3D rotateX effect
-  - `HeroCardDeck` component — 5 fanned floating cards with GSAP loop animations and gold glow
-  - `FloatingCard` component — individual animated playing card with shimmer
-  - Stats bar (10+ tricks, 3 skill levels, 100% free)
-  - Features section (3 bento cards with Framer Motion scroll reveals)
-  - CTA banner with radial glow
+  - `HeroCardDeck` — 5 fanned floating cards with GSAP loop animations and gold glow
+  - `FloatingCard` — individual animated playing card with shimmer
+  - Stats bar, features section, CTA banner
 - **Tricks library** (`app/tricks/page.tsx`):
   - Bento grid layout (asymmetric 3-column mosaic with large/wide/tall/default variants)
-  - `TrickCard` component — hover glow, suit watermark, animated ChevronRight reveal
-  - `DifficultyFilter` — animated filter pills with Framer Motion layout animations
-  - 12 hardcoded demo tricks covering Beginner, Intermediate, and Advanced
+  - `TrickCard`, `DifficultyFilter`, `DifficultyBadge` components
   - Graceful fallback to demo data when Sanity is not configured
 - **Trick detail page** (`app/tricks/[slug]/page.tsx`):
-  - Full trick layout: effect description, step accordion, secret reveal, sidebar
-  - `AnimatedCardStep` — GSAP-powered card animations per step type (flip, fan, shuffle, reveal, cut)
-  - `SecretReveal` — animated expand/collapse with blur overlay and purple gradient reveal
-  - `DifficultyBadge` — color-coded pill badges for all three difficulty levels
-  - Video embed support with YouTube/Vimeo URL parsing
-  - Performance tips sidebar
-  - Required items sidebar
-  - Demo detail data for the Ambitious Card trick
+  - Step accordion, `SecretReveal`, video embed, performance tips sidebar, required items sidebar
 
 ---
 
