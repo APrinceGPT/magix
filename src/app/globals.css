@@ -1,0 +1,140 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Core palette */
+  --bg-void: #060608;
+  --bg-deep: #0a0a0f;
+  --bg-surface: #11111a;
+  --bg-elevated: #191926;
+  --bg-card: #1e1e2e;
+
+  /* Gold accent */
+  --gold-bright: #f5c842;
+  --gold-mid: #d4a017;
+  --gold-dim: #8b6914;
+  --gold-glow: rgba(245, 200, 66, 0.15);
+
+  /* Purple accent */
+  --purple-bright: #a78bfa;
+  --purple-mid: #7c3aed;
+  --purple-dim: #4c1d95;
+  --purple-glow: rgba(167, 139, 250, 0.12);
+
+  /* Text */
+  --text-primary: #f0ead6;
+  --text-secondary: #9d9baf;
+  --text-muted: #5a5870;
+
+  /* Borders */
+  --border-subtle: rgba(245, 200, 66, 0.08);
+  --border-mid: rgba(245, 200, 66, 0.2);
+  --border-bright: rgba(245, 200, 66, 0.5);
+
+  /* Difficulty colors */
+  --difficulty-beginner: #34d399;
+  --difficulty-intermediate: #f5c842;
+  --difficulty-advanced: #f87171;
+
+  /* Fonts */
+  --font-display: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--bg-void);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-body);
+}
+
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Selection ─────────────────────────────────────────── */
+::selection {
+  background: var(--gold-glow);
+  color: var(--gold-bright);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dim);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold-mid); }
+
+/* ── Display font utility ──────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+
+/* ── Gold gradient text ────────────────────────────────── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-mid) 50%, var(--gold-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glowing border ────────────────────────────────────── */
+.border-gold-glow {
+  border: 1px solid var(--border-mid);
+  box-shadow: 0 0 20px var(--gold-glow), inset 0 0 20px rgba(245, 200, 66, 0.03);
+}
+
+/* ── Noise texture overlay ─────────────────────────────── */
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Card shimmer animation ────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(245, 200, 66, 0.08) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ── Floating glow orb ─────────────────────────────────── */
+@keyframes float-glow {
+  0%, 100% { transform: translateY(0px) scale(1);   opacity: 0.6; }
+  50%       { transform: translateY(-20px) scale(1.05); opacity: 1; }
+}
+
+.float-glow { animation: float-glow 6s ease-in-out infinite; }
+
+/* ── Difficulty badge ──────────────────────────────────── */
+.badge-beginner     { color: var(--difficulty-beginner);     border-color: var(--difficulty-beginner); }
+.badge-intermediate { color: var(--difficulty-intermediate); border-color: var(--difficulty-intermediate); }
+.badge-advanced     { color: var(--difficulty-advanced);     border-color: var(--difficulty-advanced); }
