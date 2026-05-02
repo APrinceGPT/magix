@@ -91,8 +91,13 @@ export function AnimatedCardStep({ animation, active }: AnimatedCardStepProps) {
         }
         break
 
-      default:
-        tl.to(c1, { y: -10, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 })
+      default: {
+        // Use a standalone tween — nested repeat:-1 inside repeat:-1 causes a memory leak
+        tl.kill()
+        tlRef.current = null
+        const floatTween = gsap.to(c1, { y: -10, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 })
+        return () => { floatTween.kill() }
+      }
     }
 
     return () => { tl.kill() }

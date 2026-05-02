@@ -22,8 +22,6 @@ const CATEGORY_LABEL: Record<LessonCategory | string, string> = {
   controls:    'Card Controls',
 }
 
-const LEVEL_ORDER = ['complete-beginner', 'beginner', 'intermediate', 'advanced', 'professional']
-
 export function LessonDetailClient({ lesson, category }: { lesson: LessonDetail; category: string }) {
   const [activeStep, setActiveStep] = useState(0)
   const [mistakesOpen, setMistakesOpen] = useState(false)
@@ -54,7 +52,7 @@ export function LessonDetailClient({ lesson, category }: { lesson: LessonDetail;
                 {CATEGORY_LABEL[category]}
               </span>
               <span className="text-xs font-semibold px-3 py-1 rounded-full capitalize" style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}>
-                {lesson.level.replace('-', ' ')}
+                {lesson.level.replaceAll('-', ' ')}
               </span>
               {lesson.estimatedTime && (
                 <span className="text-xs flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>

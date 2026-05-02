@@ -70,23 +70,56 @@ const NODES: JourneyNode[] = [
   { id: 'n23', title: 'Performance Psychology', slug: 'performance-psychology', category: 'foundations', level: 'Professional', status: 'locked', x: 78, y: 90, description: 'Manage nerves, read the room, and make every moment count.', time: '45 min' },
 ]
 
-// Connection lines between key nodes
+// Connection lines — logical learning progression between nodes
 const CONNECTIONS: [string, string][] = [
+  // Complete Beginner row (left to right)
   ['n1','n2'],['n2','n3'],['n3','n4'],
-  ['n4','n5'],['n4','n7'],['n4','n8'],
-  ['n5','n6'],['n5','n10'],
-  ['n6','n10'],['n6','n13'],
-  ['n7','n12'],['n7','n9'],
-  ['n8','n9'],['n8','n13'],
-  ['n9','n14'],
-  ['n10','n11'],['n10','n15'],
-  ['n11','n15'],
-  ['n12','n16'],['n12','n17'],
-  ['n13','n14'],['n13','n18'],
-  ['n15','n19'],
-  ['n16','n20'],['n17','n20'],
-  ['n18','n21'],
-  ['n20','n22'],['n21','n22'],['n22','n23'],
+
+  // Complete Beginner → Beginner (vertical drops)
+  ['n1','n5'],  // Card Anatomy → Overhand Shuffle
+  ['n2','n7'],  // How to Hold → Pinky Break
+  ['n3','n6'],  // Basic Spread → Hindu Shuffle
+  ['n4','n8'],  // Squaring → Key Card
+  ['n4','n9'],  // Squaring → Double Undercut
+
+  // Beginner row (horizontal)
+  ['n5','n6'],  // Overhand → Hindu
+  ['n7','n8'],  // Pinky Break → Key Card
+  ['n8','n9'],  // Key Card → Double Undercut
+
+  // Beginner → Intermediate (vertical drops)
+  ['n5','n10'], // Overhand → Table Riffle
+  ['n6','n11'], // Hindu → Charlier Cut
+  ['n7','n12'], // Pinky Break → Double Lift
+  ['n8','n13'], // Key Card → Hindu Force
+  ['n9','n14'], // Double Undercut → Swing Cut Force
+
+  // Intermediate row (horizontal)
+  ['n10','n11'],// Table Riffle → Charlier Cut
+  ['n13','n14'],// Hindu Force → Swing Cut Force
+
+  // Intermediate → Advanced (vertical drops)
+  ['n10','n15'],// Table Riffle → Faro Shuffle
+  ['n11','n15'],// Charlier → Faro Shuffle
+  ['n12','n16'],// Double Lift → Classic Palm
+  ['n12','n17'],// Double Lift → Top Palm
+  ['n12','n18'],// Double Lift → Erdnase Colour Change
+  ['n14','n18'],// Swing Cut → Erdnase
+
+  // Advanced row (horizontal)
+  ['n15','n19'],// Faro → Card Spring
+  ['n16','n17'],// Classic Palm → Top Palm
+
+  // Advanced → Professional (vertical drops)
+  ['n16','n20'],// Classic Palm → Misdirection
+  ['n17','n20'],// Top Palm → Misdirection
+  ['n18','n21'],// Erdnase → Patter Writing
+  ['n19','n22'],// Card Spring → Set Construction
+
+  // Professional row (horizontal)
+  ['n20','n21'],// Misdirection → Patter Writing
+  ['n21','n22'],// Patter Writing → Set Construction
+  ['n22','n23'],// Set Construction → Performance Psychology
 ]
 
 const LEVEL_LABELS = [
@@ -99,7 +132,6 @@ const LEVEL_LABELS = [
 
 export function JourneyMap() {
   const [hovered, setHovered] = useState<string | null>(null)
-  const hoveredNode = NODES.find(n => n.id === hovered)
 
   const nodeMap = Object.fromEntries(NODES.map(n => [n.id, n]))
 
@@ -197,77 +229,89 @@ export function JourneyMap() {
             const isHovered = hovered === node.id
             const isLocked = node.status === 'locked'
             const isFeatured = node.status === 'featured'
+            // Clamp tooltip so it never overflows left/right edges of the map
+            const tooltipShift = node.x < 20 ? 60 : node.x > 80 ? -60 : 0
 
             return (
-              <motion.div
+              <div
                 key={node.id}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.03, duration: 0.4, type: 'spring', stiffness: 200, damping: 15 }}
                 style={{
                   position: 'absolute',
                   left: `${node.x}%`,
                   top: `${node.y}%`,
-                  transform: 'translate(-50%, -50%)',
+                  marginLeft: isFeatured ? -24 : -20,
+                  marginTop: isFeatured ? -24 : -20,
                   zIndex: isHovered ? 20 : 10,
                 }}
                 onMouseEnter={() => setHovered(node.id)}
                 onMouseLeave={() => setHovered(null)}
               >
-                {isLocked ? (
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center cursor-not-allowed"
-                    style={{
-                      background: 'var(--bg-elevated)',
-                      border: '2px solid var(--border-subtle)',
-                    }}
-                  >
-                    <Lock size={14} style={{ color: 'var(--text-muted)' }} />
-                  </div>
-                ) : (
-                  <Link href={`/learn/${node.category}/${node.slug}`}>
-                    <motion.div
-                      whileHover={{ scale: 1.25 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="relative flex items-center justify-center cursor-pointer"
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.03, duration: 0.4, type: 'spring', stiffness: 200, damping: 15 }}
+                >
+                  {isLocked ? (
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center cursor-not-allowed"
                       style={{
-                        width: isFeatured ? 48 : 40,
-                        height: isFeatured ? 48 : 40,
-                        borderRadius: '50%',
-                        background: `radial-gradient(circle at 35% 35%, ${color}90, ${color}40)`,
-                        border: `2px solid ${color}`,
-                        boxShadow: isHovered
-                          ? `0 0 0 4px ${color}30, 0 0 20px ${color}50`
-                          : `0 0 8px ${color}30`,
-                        transition: 'box-shadow 0.2s',
+                        background: 'var(--bg-elevated)',
+                        border: '2px solid var(--border-subtle)',
                       }}
                     >
-                      {isFeatured && (
-                        <Star size={12} style={{ color: '#fff', fill: '#fff' }} />
-                      )}
-                      {/* Pulse ring for featured */}
-                      {isFeatured && (
-                        <motion.div
-                          className="absolute inset-0 rounded-full"
-                          style={{ border: `2px solid ${color}` }}
-                          animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        />
-                      )}
-                    </motion.div>
-                  </Link>
-                )}
+                      <Lock size={14} style={{ color: 'var(--text-muted)' }} />
+                    </div>
+                  ) : (
+                    <Link href={`/learn/${node.category}/${node.slug}`}>
+                      <motion.div
+                        whileHover={{ scale: 1.25 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="relative flex items-center justify-center cursor-pointer"
+                        style={{
+                          width: isFeatured ? 48 : 40,
+                          height: isFeatured ? 48 : 40,
+                          borderRadius: '50%',
+                          background: `radial-gradient(circle at 35% 35%, ${color}90, ${color}40)`,
+                          border: `2px solid ${color}`,
+                          boxShadow: isHovered
+                            ? `0 0 0 4px ${color}30, 0 0 20px ${color}50`
+                            : `0 0 8px ${color}30`,
+                          transition: 'box-shadow 0.2s',
+                        }}
+                      >
+                        {isFeatured && (
+                          <Star size={12} style={{ color: '#fff', fill: '#fff' }} />
+                        )}
+                        {/* Pulse ring — smooth ease-out fade, not a hard beat */}
+                        {isFeatured && (
+                          <motion.div
+                            className="absolute inset-0 rounded-full pointer-events-none"
+                            style={{ border: `2px solid ${color}` }}
+                            animate={{ scale: [1, 1.7], opacity: [0.5, 0] }}
+                            transition={{
+                              duration: 2.2,
+                              ease: 'easeOut',
+                              repeat: Infinity,
+                              repeatDelay: 0.8,
+                            }}
+                          />
+                        )}
+                      </motion.div>
+                    </Link>
+                  )}
+                </motion.div>
 
                 {/* Tooltip */}
                 {isHovered && (
                   <motion.div
                     initial={{ opacity: 0, y: 6, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.15 }}
                     className="absolute z-30 pointer-events-none"
                     style={{
-                      bottom: '110%',
+                      bottom: '120%',
                       left: '50%',
-                      transform: 'translateX(-50%)',
+                      transform: `translateX(calc(-50% + ${tooltipShift}px))`,
                       width: 200,
                     }}
                   >
@@ -297,25 +341,24 @@ export function JourneyMap() {
                         </div>
                       )}
                     </div>
-                    {/* Arrow */}
+                    {/* Arrow — offset matches tooltip shift */}
                     <div
                       style={{
                         position: 'absolute',
                         bottom: -5,
-                        left: '50%',
-                        transform: 'translateX(-50%)',
+                        left: `calc(50% - ${tooltipShift}px)`,
+                        transform: 'translateX(-50%) rotate(45deg)',
                         width: 10,
                         height: 10,
                         background: 'var(--bg-card)',
                         border: `1px solid ${color}50`,
                         borderTop: 'none',
                         borderLeft: 'none',
-                        rotate: '45deg',
                       }}
                     />
                   </motion.div>
                 )}
-              </motion.div>
+              </div>
             )
           })}
         </div>
