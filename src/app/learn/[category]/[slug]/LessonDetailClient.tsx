@@ -18,8 +18,8 @@ const CATEGORY_COLOR: Record<LessonCategory | string, string> = {
 const CATEGORY_LABEL: Record<LessonCategory | string, string> = {
   foundations: 'Foundations',
   shuffles:    'Shuffles',
-  sleights:    'Sleight of Hand',
-  controls:    'Card Controls',
+  sleights:    'Sleights',
+  controls:    'Controls',
 }
 
 export function LessonDetailClient({ lesson, category }: { lesson: LessonDetail; category: string }) {
