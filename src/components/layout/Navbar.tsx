@@ -7,6 +7,7 @@ import { Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const links = [
+  { href: '/learn', label: 'Learn' },
   { href: '/tricks', label: 'Tricks' },
   { href: '/tricks?difficulty=beginner', label: 'Beginner' },
   { href: '/tricks?difficulty=intermediate', label: 'Intermediate' },
@@ -67,7 +68,7 @@ export function Navbar() {
         </div>
 
         {/* CTA */}
-        <Link href="/tricks">
+        <Link href="/learn">
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}

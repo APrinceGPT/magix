@@ -10,12 +10,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- `/learn` deep-learning path (Shuffles, Sleights, Controls, Tricks) with 4 radically different layout paradigms
-- Interactive Journey Map homepage (visual road from Complete Beginner → Professional)
-- Illustrated hand animations for sleight-of-hand technique breakdown
-- 40+ lessons spanning Complete Beginner → Amateur → Intermediate → Advanced → Professional
+- Seed 40+ real lessons into Sanity CMS
 - Mobile navigation menu
 - Trick search
+
+---
+
+## [0.5.0] - 2026-05-03
+
+### Added — `/learn` Deep Learning Path
+
+#### Infrastructure
+- `src/sanity/schemas/lesson.ts` — new `lesson` document type with full schema: category, level, tagline, overview, estimatedTime, steps (stepNumber, title, instruction, fingerNote, cardAnimation), commonMistakes (mistake + fix), practiceDrill (title, description, reps), performanceContext, videoUrl, featured, order
+- `src/sanity/types.ts` — added `LessonCategory`, `LessonLevel`, `HandDiagram`, `LessonStep`, `CommonMistake`, `PracticeDrill`, `LessonSummary`, `LessonDetail` TypeScript interfaces
+- `src/sanity/queries.ts` — added `ALL_LESSONS_QUERY`, `LESSONS_BY_CATEGORY_QUERY`, `LESSON_BY_SLUG_QUERY` GROQ queries
+- `src/lib/demoLessons.ts` — 14 complete demo lessons with real instruction content covering all four categories (foundations, shuffles, sleights, controls)
+
+#### Routes — Four Radically Different Layout Paradigms
+- `src/app/learn/page.tsx` — Journey Map landing page
+- `src/app/learn/foundations/page.tsx` — **Grid layout**: beginner row + professional row split, face-down cards for locked professional lessons
+- `src/app/learn/shuffles/page.tsx` — **Horizontal scroll timeline**: timeline dot per shuffle, animated card headers, scroll-driven navigation
+- `src/app/learn/sleights/page.tsx` — **Full-screen split-screen**: lesson list sidebar, large animated floating card showcase, lesson info panel with AnimatePresence transitions
+- `src/app/learn/controls/page.tsx` — **Vertical magazine**: editorial large title, alternating left/right image+text layout, big number watermarks, italic pull-quote intros
+- `src/app/learn/[category]/[slug]/page.tsx` — Server component lesson detail with Sanity + demo fallback
+- `src/app/learn/[category]/[slug]/LessonDetailClient.tsx` — Full lesson detail: colored header, step accordion with inline card animations, common mistakes collapsible, practice drill sidebar, performance context
+
+#### Components
+- `src/components/learn/JourneyMap.tsx` — Interactive 23-node visual roadmap with SVG connection lines, hover tooltips, pulsing animations, level lane dividers, category quick-links
+
+#### Navigation
+- `src/components/layout/Navbar.tsx` — Added `/learn` link, updated CTA button to point to `/learn`
 
 ---
 
