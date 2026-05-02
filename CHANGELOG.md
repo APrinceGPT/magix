@@ -10,9 +10,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Seed 40+ real lessons into Sanity CMS
 - Mobile navigation menu
 - Trick search
+
+---
+
+## [0.6.0] - 2026-05-03
+
+### Added — Sanity Lesson Content
+
+- `scripts/seed-lessons.mjs` — seed script to populate Sanity with all lesson content
+- **33 real lessons** seeded across all four categories with full instructional content:
+  - **Foundations (8):** Card Anatomy, How to Hold a Deck, Basic Spread, Squaring the Deck, Misdirection, Patter Writing, Set Construction, Performance Psychology
+  - **Shuffles (8):** Overhand Shuffle, Hindu Shuffle, Table Riffle Shuffle, Charlier Cut, Faro Shuffle, Card Spring, Two-Handed Cut, Triple Cut
+  - **Sleights (8):** Pinky Break, Double Lift, Classic Palm, Top Palm, Erdnase Colour Change, Second Deal, Bottom Deal, The Pass
+  - **Controls (9):** Key Card Control, Double Undercut, Hindu Force, Swing Cut Force, Riffle Force, Dribble Force, The Glimpse, Injog Shuffle Control, Ambitious Card Routine
+- Every lesson includes: overview, step-by-step instructions with finger notes, card animations, common mistakes with fixes, practice drill with reps, and performance context
+- Lesson detail pages now serve real Sanity content with demo fallback
 
 ---
 
