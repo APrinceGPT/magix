@@ -20,9 +20,12 @@ export function getDifficultyColor(difficulty: Difficulty): string {
 }
 
 export function getYouTubeEmbedUrl(url: string): string | null {
-  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+  // Must match youtube.com or youtu.be host (not evil-youtube.com).
+  // v= param may be first (?v=) or after others (&v=).
+  // ID must be exactly 11 chars — anchored by end-of-word boundary.
+  const match = url.match(/(?:^|[./])(?:www\.)?youtube\.com\/watch(?:\?|.*?&)v=([a-zA-Z0-9_-]{11})(?:[^a-zA-Z0-9_-]|$)|(?:^|[./])(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(?:[^a-zA-Z0-9_-]|$)/)
   if (!match) return null
-  return `https://www.youtube.com/embed/${match[1]}`
+  return `https://www.youtube.com/embed/${match[1] ?? match[2]}`
 }
 
 export function getVimeoEmbedUrl(url: string): string | null {

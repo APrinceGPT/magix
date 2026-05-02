@@ -17,9 +17,11 @@ interface PlayingCardProps {
 
 const isRed = (suit: Suit) => suit === '♥' || suit === '♦'
 
+export const CARD_VALUES: CardValue[] = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
+
 // Pip layout grid: each value maps to [row][col] positions (3x5 grid, 0-indexed)
 // col: 0=left, 1=center, 2=right  row: 0=top ... 4=bottom
-const PIP_LAYOUTS: Record<string, [number, number][]> = {
+export const PIP_LAYOUTS: Record<string, [number, number][]> = {
   'A':  [[2, 1]],
   '2':  [[0, 1], [4, 1]],
   '3':  [[0, 1], [2, 1], [4, 1]],

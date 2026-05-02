@@ -5,10 +5,10 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Lock, CheckCircle2, ChevronRight, Sparkles, Star } from 'lucide-react'
 
-type NodeStatus = 'available' | 'locked' | 'featured'
-type NodeCategory = 'foundations' | 'shuffles' | 'sleights' | 'controls'
+export type NodeStatus = 'available' | 'locked' | 'featured'
+export type NodeCategory = 'foundations' | 'shuffles' | 'sleights' | 'controls'
 
-interface JourneyNode {
+export interface JourneyNode {
   id: string
   title: string
   slug: string
@@ -21,21 +21,21 @@ interface JourneyNode {
   time: string
 }
 
-const CATEGORY_COLOR: Record<NodeCategory, string> = {
+export const CATEGORY_COLOR: Record<NodeCategory, string> = {
   foundations: '#34d399',
   shuffles:    '#f5c842',
   sleights:    '#a78bfa',
   controls:    '#f87171',
 }
 
-const CATEGORY_LABEL: Record<NodeCategory, string> = {
+export const CATEGORY_LABEL: Record<NodeCategory, string> = {
   foundations: 'Foundations',
   shuffles:    'Shuffles',
   sleights:    'Sleights',
   controls:    'Controls',
 }
 
-const NODES: JourneyNode[] = [
+export const NODES: JourneyNode[] = [
   // ── Complete Beginner ─────────────────────────────
   { id: 'n1',  title: 'Card Anatomy',       slug: 'card-anatomy',       category: 'foundations', level: 'Complete Beginner', status: 'available', x: 10, y: 8,  description: 'Learn every part of a playing card and why it matters.',      time: '5 min' },
   { id: 'n2',  title: 'How to Hold a Deck', slug: 'how-to-hold-a-deck', category: 'foundations', level: 'Complete Beginner', status: 'available', x: 28, y: 8,  description: 'Dealer\'s grip, mechanic\'s grip, and biddle grip.',           time: '8 min' },
@@ -71,7 +71,7 @@ const NODES: JourneyNode[] = [
 ]
 
 // Connection lines — logical learning progression between nodes
-const CONNECTIONS: [string, string][] = [
+export const CONNECTIONS: [string, string][] = [
   // Complete Beginner row (left to right)
   ['n1','n2'],['n2','n3'],['n3','n4'],
 
