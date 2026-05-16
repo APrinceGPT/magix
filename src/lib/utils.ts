@@ -29,7 +29,8 @@ export function getYouTubeEmbedUrl(url: string): string | null {
 }
 
 export function getVimeoEmbedUrl(url: string): string | null {
-  const match = url.match(/vimeo\.com\/(\d+)/)
+  // Must match vimeo.com host (not evil-vimeo.com — anchored at word boundary)
+  const match = url.match(/(?:^|[./])(?:www\.)?vimeo\.com\/(\d+)(?:[^0-9]|$)/)
   if (!match) return null
   return `https://player.vimeo.com/video/${match[1]}`
 }

@@ -54,12 +54,12 @@ export function Navbar() {
               href={link.href}
               className={cn(
                 'text-sm font-medium tracking-wide transition-colors duration-200',
-                pathname === link.href
+                pathname.startsWith(link.href.split('?')[0]) && link.href.split('?')[0] !== '/'
                   ? 'text-gold-bright'
                   : 'hover:text-[var(--gold-bright)]'
               )}
               style={{
-                color: pathname === link.href ? 'var(--gold-bright)' : 'var(--text-secondary)',
+                color: pathname.startsWith(link.href.split('?')[0]) && link.href.split('?')[0] !== '/' ? 'var(--gold-bright)' : 'var(--text-secondary)',
               }}
             >
               {link.label}

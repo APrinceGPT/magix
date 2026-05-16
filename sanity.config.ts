@@ -23,8 +23,12 @@ export default defineConfig({
               .title('Card Tricks')
               .schemaType('trick')
               .child(S.documentTypeList('trick').title('All Tricks')),
+            S.listItem()
+              .title('Lessons')
+              .schemaType('lesson')
+              .child(S.documentTypeList('lesson').title('All Lessons')),
           ]),
     }),
-    visionTool(),
+    ...(process.env.NODE_ENV !== 'production' ? [visionTool()] : []),
   ],
 })

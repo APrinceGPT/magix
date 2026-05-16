@@ -15,6 +15,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.8.0] - 2026-05-16
+
+### ✅ Added
+- **Adversarial test suite** — `tests/adversarial.test.ts` with 63 new tests across 13 domains (total suite now 129 tests)
+  - Vimeo host-anchoring attacks (`evil-vimeo.com`, subdomain injection, no-path edge cases)
+  - `getDifficultyColor` hex values bound directly to `globals.css` CSS custom properties
+  - `BentoGrid getVariant` pattern exhaustively verified across a 30-item range
+  - `VALID_FILTERS` alignment with the `Difficulty` TypeScript union
+  - `isSanityConfigured` boolean type and client construction safety
+  - GROQ query field alignment — every required `LessonDetail`, `TrickDetail`, `TrickSummary` field verified present in projections; parameterised `$slug` injection guards
+  - DEMO_LESSONS vs NODES slug coverage — found and fixed 6 missing entries
+  - Schema `level`/`category` values bound to live schema source (eliminates stale-copy risk from old `VALID_LEVELS` set)
+  - `CardAnimation` enum alignment across schema source, TypeScript type, and demo data
+  - `cn()` utility — tailwind-merge deduplication, conditional classes, null/undefined safety, object syntax
+  - Step and mistake `_key` integrity (no empty React keys)
+  - `VALID_CATEGORIES` four-way alignment: page guard, JourneyMap, schema source, TypeScript type
+  - YouTube additional attack vectors (Shorts URLs, channel URLs, `evil-youtu.be`, subdomain injection)
+
+### 🐛 Bug Fixes
+- **6 available JourneyMap nodes produced 404 on click** — `table-riffle-shuffle`, `charlier-cut`, `swing-cut-force`, `faro-shuffle`, `top-palm`, and `card-spring` had no `DEMO_LESSONS` entry; added complete lesson data for all six including steps, common mistakes, practice drills, and card animations
+- **`getVimeoEmbedUrl` matched `evil-vimeo.com`** — regex was a substring match with no host anchor; now uses the same word-boundary anchoring as the YouTube regex
+- **Demo fallback served wrong content for unknown slugs** — `DEMO_DETAIL[slug] ?? Object.values(DEMO_DETAIL)[0]` silently returned the first demo item for any missing slug; fixed to return `null` so `notFound()` fires correctly (both `tricks/[slug]` and `learn/[category]/[slug]`)
+- **`category` URL param flowed into inline styles unvalidated** — added explicit enum guard in `learn/[category]/[slug]/page.tsx`; invalid categories now trigger `notFound()` before reaching the client
+- **`initialDifficulty` URL param accepted without validation** — cast directly to `Filter` type; now validated against `VALID_FILTERS` array, falls back to `'all'` for any unknown value
+- **Non-null assertions on optional typed fields** — `lesson.steps!` and `lesson.commonMistakes!` replaced with safe optional chaining (`?.map`)
+- **`<iframe>` missing `title` and `referrerPolicy`** — both video iframes now include `title`, `referrerPolicy="no-referrer"`, and a minimal `allow` list; removed `clipboard-write` from trick iframe permissions
+- **`AppShell` forced entire layout into `'use client'`** — removed `usePathname` studio check; studio exclusion now handled by its own route-level `layout.tsx` as the App Router intends; `AppShell` is now a Server Component
+- **Google Fonts loaded via render-blocking CSS `@import`** — migrated to `next/font/google` (self-hosted, non-blocking, `font-display: swap`, dropped unused weight variants)
+- **No security headers** — added `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, and a base CSP to `next.config.ts`; also added `images.remotePatterns` for Sanity CDN
+- **`@sanity/vision` in production dependencies** — moved to `devDependencies`; `visionTool()` now only loaded when `NODE_ENV !== 'production'`
+- **Sanity Studio missing Lessons in structure** — added `lesson` document list alongside the existing Tricks list in `sanity.config.ts`
+- **Navbar active link detection used exact-match** — `/learn/foundations/...` no longer leaves the Learn link unhighlighted; now uses `pathname.startsWith()` against the base path
+- **Array index used as React `key`** — trick steps keyed by `stepNumber`; `requiredItems` and `performanceTips` keyed by value
+- **Redundant `FaceCard` label ternary** — `value === 'J' ? 'J' : value === 'Q' ? 'Q' : 'K'` always equalled `value`; simplified to `const label = value`
+
+---
+
 ## [0.7.0] - 2026-05-03
 
 ### ✅ Added

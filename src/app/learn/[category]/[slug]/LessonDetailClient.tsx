@@ -101,7 +101,7 @@ export function LessonDetailClient({ lesson, category }: { lesson: LessonDetail;
             <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               <SectionLabel color={color}>Step by Step</SectionLabel>
               <div className="flex flex-col gap-3">
-                {lesson.steps!.map((step, i) => {
+                {lesson.steps?.map((step, i) => {
                   const isActive = activeStep === i
                   return (
                     <motion.div key={step._key ?? i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 * i }}>
@@ -179,7 +179,7 @@ export function LessonDetailClient({ lesson, category }: { lesson: LessonDetail;
                 {mistakesOpen && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                     <div className="flex flex-col gap-3 mt-3">
-                      {lesson.commonMistakes!.map((m, i) => (
+                      {lesson.commonMistakes?.map((m, i) => (
                         <div key={m._key ?? i} className="p-4 rounded-xl" style={{ background: 'rgba(248,113,113,0.06)', border: '1px solid rgba(248,113,113,0.15)' }}>
                           <p className="text-sm font-semibold mb-1" style={{ color: '#f87171' }}>✕ {m.mistake}</p>
                           <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>→ {m.fix}</p>
@@ -197,7 +197,14 @@ export function LessonDetailClient({ lesson, category }: { lesson: LessonDetail;
             <motion.section initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <SectionLabel color={color}>Watch it Performed</SectionLabel>
               <div className="relative rounded-2xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
-                <iframe src={embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen />
+                <iframe
+                  src={embedUrl}
+                  title="Lesson video"
+                  className="absolute inset-0 w-full h-full"
+                  allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                  referrerPolicy="no-referrer"
+                />
               </div>
             </motion.section>
           )}

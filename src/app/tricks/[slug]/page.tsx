@@ -41,7 +41,7 @@ const DEMO_DETAIL: Record<string, TrickDetail> = {
 
 async function fetchTrick(slug: string): Promise<TrickDetail | null> {
   if (!isSanityConfigured) {
-    return DEMO_DETAIL[slug] ?? Object.values(DEMO_DETAIL)[0]
+    return DEMO_DETAIL[slug] ?? null
   }
   try {
     return await client.fetch<TrickDetail | null>(TRICK_BY_SLUG_QUERY, { slug })

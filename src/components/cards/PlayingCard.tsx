@@ -80,7 +80,7 @@ function PipGrid({ suit, value, color, size }: { suit: Suit; value: CardValue; c
 }
 
 function FaceCard({ suit, value, color, size }: { suit: Suit; value: CardValue; color: string; size: number }) {
-  const label = value === 'J' ? 'J' : value === 'Q' ? 'Q' : 'K'
+  const label = value
   return (
     <div
       style={{

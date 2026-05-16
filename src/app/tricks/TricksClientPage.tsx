@@ -13,10 +13,13 @@ interface TricksClientPageProps {
   initialDifficulty?: string
 }
 
+const VALID_FILTERS: Filter[] = ['all', 'beginner', 'intermediate', 'advanced']
+
 export function TricksClientPage({ tricks, initialDifficulty }: TricksClientPageProps) {
-  const [filter, setFilter] = useState<Filter>(
-    (initialDifficulty as Filter) ?? 'all'
-  )
+  const safeInitial: Filter = VALID_FILTERS.includes(initialDifficulty as Filter)
+    ? (initialDifficulty as Filter)
+    : 'all'
+  const [filter, setFilter] = useState<Filter>(safeInitial)
 
   const filtered = useMemo(
     () => filter === 'all' ? tricks : tricks.filter((t) => t.difficulty === filter),

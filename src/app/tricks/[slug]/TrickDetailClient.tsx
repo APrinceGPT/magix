@@ -111,7 +111,7 @@ export function TrickDetailClient({ trick }: TrickDetailClientProps) {
                     const isActive = activeStep === i
                     return (
                       <motion.div
-                        key={i}
+                        key={step.stepNumber}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 * i }}
@@ -217,9 +217,11 @@ export function TrickDetailClient({ trick }: TrickDetailClientProps) {
                 <div className="relative rounded-2xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
                   <iframe
                     src={embedUrl}
+                    title="Trick performance video"
                     className="absolute inset-0 w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
                     allowFullScreen
+                    referrerPolicy="no-referrer"
                   />
                 </div>
               </motion.section>
@@ -244,8 +246,8 @@ export function TrickDetailClient({ trick }: TrickDetailClientProps) {
                   </span>
                 </div>
                 <ul className="flex flex-col gap-2">
-                  {trick.requiredItems.map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                  {trick.requiredItems.map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
                       <span style={{ color: 'var(--gold-dim)' }}>✦</span>
                       {item}
                     </li>
@@ -273,8 +275,8 @@ export function TrickDetailClient({ trick }: TrickDetailClientProps) {
                   </span>
                 </div>
                 <ul className="flex flex-col gap-3">
-                  {trick.performanceTips.map((tip, i) => (
-                    <li key={i} className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                  {trick.performanceTips.map((tip) => (
+                    <li key={tip} className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                       <span style={{ color: 'var(--gold-bright)', marginRight: 8, fontSize: 10 }}>◆</span>
                       {tip}
                     </li>
